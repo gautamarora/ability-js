@@ -49,11 +49,16 @@ authorize = function(action, target, role) {
 		value = ability.can_ability(action, target);		
 	}
 
+  if (ability.redirect == false && value == false && req.xhr == true) {
+    return false;
+  }
+
 	if (ability.redirect == true && value == false) {
 	  res.render = function(view, options, fn) {
   	  req.flash("alert", ability.redirect_message);
   		res.redirect(ability.redirect_to);
 	  }
 	}
+  return value;
 
 }
